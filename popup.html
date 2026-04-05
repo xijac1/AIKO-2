@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AIKO 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/popup.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="header">
+        <div class="brand">
+          <img src="assets/icons/note32.png" alt="AIKO" class="logo" />
+          <h1>AIKO 2</h1>
+        </div>
+        <button id="toggleSettings" class="btn ghost icon-btn" aria-label="Settings" title="Settings">
+          <img src="assets/settings48.png" alt="" />
+        </button>
+      </div>
+
+      <div id="settingsPanel" class="panel hidden">
+        <label class="label" for="groqKey">Groq API key</label>
+        <input id="groqKey" type="password" placeholder="gsk_..." />
+
+        <label class="label" for="groqModel">Groq model</label>
+        <input id="groqModel" type="text" placeholder="meta-llama/llama-4-scout-17b-16e-instruct" />
+
+        <button id="saveSettings" class="btn">Save</button>
+      </div>
+
+      <div id="mainPanel">
+        <label class="label" for="selection">Selected or pasted text</label>
+        <textarea id="selection" rows="5" placeholder="Highlight text on a page or paste here..."></textarea>
+
+        <div class="image-uploader">
+          <div class="image-drop" id="imageDrop">
+            <div class="image-drop-title">Add an image</div>
+            <div class="image-drop-subtitle">Drag & drop or use the button</div>
+            <div class="image-actions">
+              <label class="btn" for="imageInput">Add from files</label>
+              <button id="clearImage" class="btn ghost" type="button">Remove image</button>
+            </div>
+            <input id="imageInput" class="image-input" type="file" accept="image/*" />
+            <div id="imageMeta" class="image-meta hidden"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="generate" class="btn primary">Generate card</button>
+          <button id="generateMultiple" class="btn">Generate multiple</button>
+        </div>
+
+        <div id="singleCardPanel">
+          <label class="label" for="front">Front</label>
+          <textarea id="front" rows="3" placeholder="Question / prompt"></textarea>
+
+          <label class="label" for="back">Back</label>
+          <textarea id="back" rows="4" placeholder="Answer / explanation"></textarea>
+
+          <div class="inline-option">
+            <input id="keepImageSingle" type="checkbox" />
+            <label for="keepImageSingle">Keep image</label>
+          </div>
+        </div>
+
+        <div id="cardsPanel" class="hidden">
+          <div class="cards-header">
+            <span class="label">Generated cards</span>
+            <div class="cards-actions">
+              <button id="selectAll" class="btn">Select all</button>
+            </div>
+          </div>
+          <div id="cardsList" class="cards-list"></div>
+        </div>
+
+        <div class="deck-header">
+          <button id="clearAll" class="btn icon-btn" aria-label="Clear" title="Clear">
+            <img src="assets/trash48.png" alt="" />
+          </button>
+        </div>
+        <label class="label deck-title" for="deck">Deck</label>
+        <div class="deck-row">
+          <button id="refreshDecks" class="btn icon-btn" aria-label="Load" title="Load">
+            <img src="assets/load48.png" alt="" />
+          </button>
+          <select id="deck"></select>
+        </div>
+
+        <div class="deck-actions">
+          <button id="addToAnki" class="btn primary">Add to Anki</button>
+        </div>
+
+        <div id="status" class="status"></div>
+      </div>
+    </div>
+
+    <script src="js/popup.js"></script>
+  </body>
+</html>

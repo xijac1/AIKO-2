@@ -1,0 +1,289 @@
+:root {
+  --bg: #a2d2ff;
+  --panel: #ffffff;
+  --text: #001429;
+  --muted: #001429;
+  --accent: #ffafcc;
+  --accent-2: #ffafcc;
+  --border: #e0d9cf;
+  --field: #EBF5FF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Chakra Petch", sans-serif;
+  color: var(--text);
+}
+
+.app {
+  width: 340px;
+  padding: 14px 14px 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  h1 {
+    margin: 0;
+    font-family: "Silkscreen", sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.3px;
+  }
+}
+
+.logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+}
+
+h1 {
+  margin: 0 0 10px;
+  font-family: "Silkscreen", sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.3px;
+}
+
+.label {
+  display: block;
+  margin: 10px 0 6px;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 13px;
+  background: var(--field);
+  color: var(--text);
+}
+
+.image-uploader {
+  margin-top: 10px;
+}
+
+.image-drop {
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  display: grid;
+  gap: 6px;
+}
+
+.image-drop.is-dragover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.image-drop-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.image-drop-subtitle {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.image-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.image-input {
+  display: none;
+}
+
+.image-meta {
+  font-size: 12px;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 13px;
+  background: var(--field);
+  color: var(--text);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 10px 0 2px;
+}
+
+.cards-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.cards-actions {
+  display: flex;
+  gap: 6px;
+}
+
+#saveSettings {
+  margin-top: 6px;
+}
+
+.deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.deck-header .label {
+  margin: 0;
+}
+
+.deck-title {
+  text-align: left;
+  margin: 6px 0 0;
+}
+
+.deck-row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+#refreshDecks {
+  width: 100%;
+  min-height: 32px;
+}
+
+.deck-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.cards-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.card-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.card-item-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.card-item textarea {
+  margin-bottom: 6px;
+}
+
+.inline-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.inline-option input {
+  width: auto;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: "Chakra Petch", sans-serif;
+}
+
+.btn.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+.btn.icon-btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.btn.primary:hover {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+.btn.ghost {
+  margin-top: 0;
+}
+
+.panel {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.hidden {
+  display: none;
+}
+
+.status {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 16px;
+}

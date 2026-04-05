@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "AIKO 2",
+  "version": "0.1.0",
+  "description": "Generate Anki cards from selected text using Groq and AnkiConnect.",
+  "permissions": ["storage", "activeTab", "scripting", "contextMenus", "clipboardRead"],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "https://api.groq.com/*"
+  ],
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "icons": {
+    "16": "assets/icons/note16.png",
+    "32": "assets/icons/note32.png",
+    "48": "assets/icons/note48.png",
+    "128": "assets/icons/note128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/icons/note16.png",
+      "32": "assets/icons/note32.png",
+      "48": "assets/icons/note48.png",
+      "128": "assets/icons/note128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["js/content.js"],
+      "css": ["css/styles.css"],
+      "run_at": "document_end"
+    }
+  ]
+}

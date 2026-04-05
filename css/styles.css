@@ -1,0 +1,17 @@
+.aiko-anki-inline {
+  position: absolute;
+  z-index: 2147483647;
+  background: #d9f2f3;
+  color: #1f1c17;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  display: none;
+}
+
+.aiko-anki-inline:hover {
+  background: #d9f2f3;
+}
