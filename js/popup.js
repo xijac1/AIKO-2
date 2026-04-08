@@ -211,10 +211,22 @@ async function loadDecks() {
     deckEl.appendChild(option);
   });
 
+  const stored = await chrome.storage.local.get(["lastSelectedDeck"]);
+  if (stored.lastSelectedDeck && response.decks.includes(stored.lastSelectedDeck)) {
+    deckEl.value = stored.lastSelectedDeck;
+  }
+
   setStatus("Decks loaded.");
 }
 
 refreshDecksBtn.addEventListener("click", loadDecks);
+
+deckEl.addEventListener("change", async () => {
+  const selectedDeck = deckEl.value;
+  if (selectedDeck) {
+    await chrome.storage.local.set({ lastSelectedDeck: selectedDeck });
+  }
+});
 
 toggleSettingsBtn.addEventListener("click", () => {
   settingsPanel.classList.toggle("hidden");
