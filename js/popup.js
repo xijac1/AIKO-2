@@ -27,6 +27,45 @@ const keepImageSingleEl = document.getElementById("keepImageSingle");
 let generatedCards = [];
 let imageDataUrl = "";
 let imageName = "";
+let lastMode = "single";
+
+async function saveDraftState() {
+  const draftState = {
+    selectionText: selectionEl.value,
+    front: frontEl.value,
+    back: backEl.value,
+    generatedCards,
+    imageDataUrl,
+    imageName,
+    keepImageSingle: keepImageSingleEl.checked,
+    lastMode
+  };
+
+  await chrome.storage.local.set({ draftState });
+}
+
+async function loadDraftState() {
+  const result = await chrome.storage.local.get(["draftState"]);
+  const draft = result.draftState;
+  if (!draft) {
+    return false;
+  }
+
+  selectionEl.value = draft.selectionText || "";
+  frontEl.value = draft.front || "";
+  backEl.value = draft.back || "";
+  keepImageSingleEl.checked = Boolean(draft.keepImageSingle);
+  imageDataUrl = draft.imageDataUrl || "";
+  imageName = draft.imageName || "";
+  lastMode = draft.lastMode || "single";
+
+  generatedCards = Array.isArray(draft.generatedCards)
+    ? draft.generatedCards
+    : [];
+  renderCards(generatedCards);
+  updateImageMeta();
+  return true;
+}
 
 function setStatus(message, isError = false) {
   statusEl.textContent = message;
@@ -69,6 +108,7 @@ function renderCards(cards) {
     front.placeholder = "Front";
     front.addEventListener("input", (event) => {
       generatedCards[index].front = event.target.value;
+      saveDraftState();
     });
 
     const back = document.createElement("textarea");
@@ -77,6 +117,7 @@ function renderCards(cards) {
     back.placeholder = "Back";
     back.addEventListener("input", (event) => {
       generatedCards[index].back = event.target.value;
+      saveDraftState();
     });
 
     const keepImageRow = document.createElement("div");
@@ -88,6 +129,7 @@ function renderCards(cards) {
     keepImageInput.disabled = !imageDataUrl;
     keepImageInput.addEventListener("change", (event) => {
       generatedCards[index].keepImage = event.target.checked;
+      saveDraftState();
     });
 
     const keepImageLabel = document.createElement("label");
@@ -130,6 +172,7 @@ function clearImageSelection() {
     keepImage: false
   }));
   renderCards(generatedCards);
+  saveDraftState();
 }
 
 function readImageFile(file) {
@@ -144,6 +187,7 @@ function readImageFile(file) {
     imageName = file.name || "Image ready";
     updateImageMeta();
     setStatus("Image loaded.");
+    saveDraftState();
   };
   reader.onerror = () => {
     setStatus("Unable to read the image file.", true);
@@ -152,9 +196,16 @@ function readImageFile(file) {
 }
 
 async function loadSelection() {
-  const result = await chrome.storage.local.get(["lastSelectionText"]);
-  if (result.lastSelectionText) {
-    selectionEl.value = result.lastSelectionText;
+  const result = await chrome.storage.local.get([
+    "lastSelectionText",
+    "shouldPrefillSelection"
+  ]);
+  if (result.shouldPrefillSelection) {
+    if (result.lastSelectionText) {
+      selectionEl.value = result.lastSelectionText;
+      saveDraftState();
+    }
+    await chrome.storage.local.set({ shouldPrefillSelection: false });
   }
 }
 
@@ -286,10 +337,12 @@ generateBtn.addEventListener("click", async () => {
 
   frontEl.value = response.card.front || "";
   backEl.value = response.card.back || "";
+  lastMode = "single";
   await chrome.storage.local.set({ lastGeneratedCard: response.card });
   await chrome.storage.local.set({ lastMode: "single" });
   generatedCards = [];
   renderCards(generatedCards);
+  await saveDraftState();
   setStatus("Card generated. Review and add to Anki.");
 });
 
@@ -315,11 +368,13 @@ generateMultipleBtn.addEventListener("click", async () => {
   generatedCards = response.cards || [];
   frontEl.value = "";
   backEl.value = "";
+  lastMode = "multi";
   await chrome.storage.local.set({
     lastGeneratedCards: generatedCards,
     lastMode: "multi"
   });
   renderCards(generatedCards);
+  await saveDraftState();
   setStatus("Multiple cards generated. Review and add selected.");
 });
 
@@ -370,12 +425,15 @@ clearAllBtn.addEventListener("click", async () => {
   keepImageSingleEl.checked = false;
   clearImageSelection();
   generatedCards = [];
+  lastMode = "single";
   renderCards(generatedCards);
   await chrome.storage.local.remove([
+    "draftState",
     "lastSelectionText",
     "lastGeneratedCard",
     "lastGeneratedCards",
-    "lastMode"
+    "lastMode",
+    "shouldPrefillSelection"
   ]);
   setStatus("Cleared.");
 });
@@ -442,12 +500,20 @@ selectAllBtn.addEventListener("click", () => {
 });
 
 async function init() {
+  const loadedDraft = await loadDraftState();
   await loadSelection();
-  await loadLastCard();
-  await loadLastMultiCards();
+  if (!loadedDraft) {
+    await loadLastCard();
+    await loadLastMultiCards();
+  }
   await loadSettings();
   await loadDecks();
   updateImageMeta();
 }
 
 init();
+
+selectionEl.addEventListener("input", saveDraftState);
+frontEl.addEventListener("input", saveDraftState);
+backEl.addEventListener("input", saveDraftState);
+keepImageSingleEl.addEventListener("change", saveDraftState);

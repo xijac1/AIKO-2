@@ -222,13 +222,11 @@ async function ankiRequest(payload) {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "selectionUpdated") {
-    chrome.storage.local.set({ lastSelectionText: message.text });
-    return;
-  }
-
   if (message.action === "openPopupWithSelection") {
-    chrome.storage.local.set({ lastSelectionText: message.text });
+    chrome.storage.local.set({
+      lastSelectionText: message.text,
+      shouldPrefillSelection: true
+    });
     if (chrome.action && chrome.action.openPopup) {
       chrome.action.openPopup().catch(() => {});
     }
@@ -302,7 +300,10 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 
   if (text) {
-    await chrome.storage.local.set({ lastSelectionText: text });
+    await chrome.storage.local.set({
+      lastSelectionText: text,
+      shouldPrefillSelection: true
+    });
     if (chrome.action && chrome.action.openPopup) {
       chrome.action.openPopup().catch(() => {});
     }

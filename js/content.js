@@ -49,8 +49,6 @@ function positionInlineButton() {
   }
 
   lastSelection = text;
-  chrome.runtime.sendMessage({ action: "selectionUpdated", text });
-
   const range = selection.getRangeAt(0);
   const rect = range.getBoundingClientRect();
   const button = ensureInlineButton();
