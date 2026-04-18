@@ -261,6 +261,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       fields: {
         Front: message.front,
         Back: message.back
+      },
+      options: {
+        allowDuplicate: true
       }
     };
 
@@ -277,6 +280,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       fields: {
         Front: card.front,
         Back: card.back
+      },
+      options: {
+        allowDuplicate: true
       }
     }));
 
